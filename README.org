@@ -1,3 +1,4 @@
 #+TITLE: Dotfiles
 
-Archivos de configuraciones varias para usar con =stow */=
+- Archivos de configuraciones varias para usar con =stow */=
+- Los links simbólicos para Emacs deben realizarse manualmente.
