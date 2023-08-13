@@ -1,0 +1,161 @@
+% Created 2023-08-12 sáb 12:36
+% Intended LaTeX compiler: pdflatex
+\documentclass[11pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{graphicx}
+\usepackage{longtable}
+\usepackage{wrapfig}
+\usepackage{rotating}
+\usepackage[normalem]{ulem}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{capt-of}
+\usepackage{hyperref}
+\author{Maxi}
+\date{\today}
+\title{Apunte sobre Git}
+\hypersetup{
+ pdfauthor={Maxi},
+ pdftitle={Apunte sobre Git},
+ pdfkeywords={},
+ pdfsubject={},
+ pdfcreator={Emacs 29.1 (Org mode 9.6.6)}, 
+ pdflang={English}}
+\begin{document}
+
+\maketitle
+\tableofcontents
+
+
+\section{Configuraciones previas}
+\label{sec:org1b819f4}
+
+Antes de hacer algo, es necesario configuar Git y GitHub,
+respectivamente. Básicamente, el procedimiento va a ser generar llaves
+SSH y GPG para hacer commits y firmarlos, respectivamente.
+
+\subsection{Generando llaves SSH}
+\label{sec:org0ac80e1}
+
+Generamos una llave con algoritmo ed25519 y seguimos los pasos requeridos.
+\begin{verbatim}
+ssh-keygen -t ed25519 -C "your\textsubscript{email}@example.com"
+\end{verbatim}
+
+Ahora, antes de generar la llave \emph{privada} se necesita comenzar con el
+cliente ssh-agent de fondo
+\begin{verbatim}
+eval "\$(ssh-agent -s)"
+\end{verbatim}
+
+Ya podemos añadirla a nuestra carpeta
+\begin{verbatim}
+ssh-add \textasciitilde{}/.ssh/id\textsubscript{ed25519}
+\end{verbatim}
+
+El archivo con terminación \texttt{.pub} es la llave pública, la que se va a
+añadir a GitHub.
+
+\subsection{Registrando llaves GPG}
+\label{sec:org7e4285a}
+
+Ya existe una guía para generar y administrar llaves GPG, útiles para
+firmar.
+
+Si previamente se usaba otra llave GPG, la quitamos.
+\begin{verbatim}
+git config --global --unset gpg.format
+\end{verbatim}
+
+Configuramos nuestra ID primaria en git (se presenta una como ejemplo)
+\begin{verbatim}
+git config --global user.signingkey 3AA5C34371567BD2
+\end{verbatim}
+
+Configuramos git para que firme automáticamente todos los commits
+\begin{verbatim}
+git config --global commit.gpgsign true
+\end{verbatim}
+
+\section{Usando Git}
+\label{sec:orgbe6762b}
+
+\subsection{Comenzando}
+\label{sec:org2f7906f}
+
+Hacemos un init en la carpeta que estamos trabajando. Leer atentamente
+el output.
+\begin{verbatim}
+git init
+\end{verbatim}
+
+Alternativamente, podemos hacer clonar un repositorio
+\begin{verbatim}
+git clone REPO
+\end{verbatim}
+
+\subsection{Actualizando los cambios realizados}
+\label{sec:orgacf4a31}
+
+Para obtener los últimos cambios realizados en nuestro repositorio,
+hacemos un \texttt{git pull}. También podemos especificar a qué rama o branch
+queremos realizar el pull, haciendo \texttt{git pull origin BRANCH}.
+
+\subsection{Realizando cambios}
+\label{sec:orgf36b9f8}
+
+Una vez hechos los cambios en nuestra computadora, necesitamos
+"avisarle" a Git. Si deseamos hacerlo con todo el directorio
+\begin{verbatim}
+git add .
+\end{verbatim}
+
+Ahora, necesitamos confirmar lo actualizado en un "commit", para
+finalmente enviarlo a nuestro repositorio. Para ello
+\begin{verbatim}
+git commit -m "mensaje del commit"
+\end{verbatim}
+
+"Pusheamos" el "commit", es decir, enviamos los cambios confirmados a
+nuestro repositorio, en la branch que estamos trabajando
+\begin{verbatim}
+git push origin BRANCH
+\end{verbatim}
+
+\section{Remote}
+\label{sec:org5543a99}
+
+En algún momento, es necesario conectar nuestro directorio Git con
+GitHub. Remote pone en contacto a los repositorios. El comando \texttt{git
+remote} nos informa el nombre que se le adjudica, el cual es siempre
+por defecto "origin".
+
+Entonces, el proceso consiste en avisarle a GitHub vía SSH que tenemos un
+remoto origin añadido en nuestra computadora. 
+\begin{verbatim}
+git remote add origin SSH
+\end{verbatim}
+
+
+\section{Extras}
+\label{sec:org4dc52a1}
+
+\subsection{Eliminar algo}
+\label{sec:orgb39bfeb}
+Para eliminar un archivo de GitHub, hacemos
+\begin{verbatim}
+git rm FILE
+\end{verbatim}
+
+Luego, es necesario añadir los cambios (\texttt{git add}), hacer un commit y
+pushearlo a GitHub.
+
+\subsection{Ver cambios modificados}
+\label{sec:orgbd7d737}
+
+Para ver si hay cambios no notificados a Git, usamos
+\begin{verbatim}
+git status
+\end{verbatim}
+\end{document}

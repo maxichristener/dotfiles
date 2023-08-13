@@ -1,0 +1,122 @@
+#+TITLE: Apunte sobre Git
+#+AUTHOR: Maxi
+
+* Configuraciones previas
+
+Antes de hacer algo, es necesario configuar Git y GitHub,
+respectivamente. Básicamente, el procedimiento va a ser generar llaves
+SSH y GPG para hacer commits y firmarlos, respectivamente.
+
+** Generando llaves SSH
+
+Generamos una llave con algoritmo ed25519 y seguimos los pasos requeridos.
+#+begin_verbatim
+ssh-keygen -t ed25519 -C "your_email@example.com"
+#+end_verbatim
+
+Ahora, antes de generar la llave /privada/ se necesita comenzar con el
+cliente ssh-agent de fondo
+#+begin_verbatim 
+eval "$(ssh-agent -s)"
+#+end_verbatim
+
+Ya podemos añadirla a nuestra carpeta
+#+begin_verbatim 
+ssh-add ~/.ssh/id_ed25519
+#+end_verbatim
+
+El archivo con terminación =.pub= es la llave pública, la que se va a
+añadir a GitHub.
+
+** Registrando llaves GPG
+
+Ya existe una guía para generar y administrar llaves GPG, útiles para
+firmar.
+
+Si previamente se usaba otra llave GPG, la quitamos.
+#+begin_verbatim 
+git config --global --unset gpg.format
+#+end_verbatim
+
+Configuramos nuestra ID primaria en git (se presenta una como ejemplo)
+#+begin_verbatim 
+git config --global user.signingkey 3AA5C34371567BD2
+#+end_verbatim
+
+Configuramos git para que firme automáticamente todos los commits
+#+begin_verbatim 
+git config --global commit.gpgsign true
+#+end_verbatim
+
+* Usando Git
+
+** Comenzando
+
+Hacemos un init en la carpeta que estamos trabajando. Leer atentamente
+el output.
+#+begin_verbatim 
+git init
+#+end_verbatim
+
+Alternativamente, podemos hacer clonar un repositorio
+#+begin_verbatim 
+git clone REPO
+#+end_verbatim
+
+** Actualizando los cambios realizados
+
+Para obtener los últimos cambios realizados en nuestro repositorio,
+hacemos un =git pull=. También podemos especificar a qué rama o branch
+queremos realizar el pull, haciendo =git pull origin BRANCH=.
+
+** Realizando cambios
+
+Una vez hechos los cambios en nuestra computadora, necesitamos
+"avisarle" a Git. Si deseamos hacerlo con todo el directorio
+#+begin_verbatim
+git add .
+#+end_verbatim
+
+Ahora, necesitamos confirmar lo actualizado en un "commit", para
+finalmente enviarlo a nuestro repositorio. Para ello
+#+begin_verbatim
+git commit -m "mensaje del commit"
+#+end_verbatim
+
+"Pusheamos" el "commit", es decir, enviamos los cambios confirmados a
+nuestro repositorio, en la branch que estamos trabajando
+#+begin_verbatim
+git push origin BRANCH
+#+end_verbatim
+
+* Remote
+
+En algún momento, es necesario conectar nuestro directorio Git con
+GitHub. Remote pone en contacto a los repositorios. El comando =git
+remote= nos informa el nombre que se le adjudica, el cual es siempre
+por defecto "origin".
+
+Entonces, el proceso consiste en avisarle a GitHub vía SSH que tenemos un
+remoto origin añadido en nuestra computadora. 
+#+begin_verbatim
+git remote add origin SSH
+#+end_verbatim
+
+
+* Extras
+
+** Eliminar algo
+Para eliminar un archivo de GitHub, hacemos
+#+begin_verbatim
+git rm FILE
+#+end_verbatim
+
+Luego, es necesario añadir los cambios (=git add=), hacer un commit y
+pushearlo a GitHub.
+
+** Ver cambios modificados
+
+Para ver si hay cambios no notificados a Git, usamos
+#+begin_verbatim
+git status
+#+end_verbatim

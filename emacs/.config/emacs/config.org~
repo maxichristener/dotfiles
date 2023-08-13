@@ -1,0 +1,253 @@
+#+TITLE: GNU EMACS config
+#+AUTHOR: Maximiliano Christener
+#+STARTUP: overview
+#+OPTIONS: toc:2
+
+* TOC :toc:
+  - [[#comentarios-iniciales][Comentarios iniciales]]
+- [[#melpa][MELPA]]
+- [[#keybinds][keybinds]]
+- [[#dired][Dired]]
+- [[#ranger][ranger]]
+- [[#transpose-frame][transpose-frame]]
+- [[#auctex][AUCTeX]]
+- [[#emacs-speaks-statistics][Emacs Speaks Statistics]]
+- [[#pdf-tools][pdf-tools]]
+- [[#org-mode][Org-mode]]
+  - [[#toc][ToC]]
+  - [[#bullets][Bullets]]
+  - [[#expansions][expansions]]
+- [[#previews-in-org][previews in org]]
+
+** Comentarios iniciales
+Para recargar la configuración, usar
+=M-x eval-buffer=
+solamente no funciona
+
+Los modos son
+- =C-c C-x a= para archivar
+- =C-c TAB= para abrir el árbol
+
+
+
+* MELPA
+#+begin_src emacs-lisp
+  (require 'package)
+  (add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/") t)
+  (package-initialize)
+;; (setq package-check-signature nil) ;; chequea las firmas digitales
+#+end_src
+
+
+* COMMENT Barras de menúes, temas, etc                                      
+#+begin_src emacs-lisp
+  ; basic mode
+  (tool-bar-mode -1 )
+  (scroll-bar-mode -1)
+  (menu-bar-mode -1)
+  (blink-cursor-mode -1)
+  (delete-selection-mode +1)
+  (global-goto-address-mode +1) ;; allows to access links
+
+  ; Set default zoom
+  (set-face-attribute 'default nil :height 138)
+
+  ; initial frame defaults
+;;  (setq initial-frame-alist '((top . 1)
+;;			    (left . 450)
+;;			    (width . 101)
+;;			    (height . 70)))
+;;
+
+  ; case-insensitive search
+  (setq case-fold-search t)
+
+  ; emacs cree que las oraciones terminan con un
+  ; punto y dos espacios. Le decimos que no es así.
+  (setq sentence-end-double-space nil)
+#+end_src
+
+
+** Tema
+Uso el tema modus-vivendi.
+#+begin_src emacs-lisp
+(load-theme 'modus-vivendi t)
+#+end_src
+
+
+
+** Fuentes
+#+begin_src emacs-lisp
+    (set-face-attribute 'default nil
+      :font "JetBrains Mono Nerd Font"
+      :height 160
+      :weight 'medium)
+    (set-face-attribute 'variable-pitch nil
+      :font "DejaVu Sans"
+      :height 160
+      :weight 'medium)
+    (set-face-attribute 'fixed-pitch nil
+      :font "JetBrains Mono Nerd Font"
+      :height 160
+      :weight 'medium)
+    ;; Makes commented text and keywords italics.
+    ;; This is working in emacsclient but not emacs.
+    ;; Your font must have an italic face available.
+    (set-face-attribute 'font-lock-comment-face nil
+      :slant 'italic)
+    (set-face-attribute 'font-lock-keyword-face nil
+      :slant 'italic)
+
+    ;; This sets the default font on all graphical frames created after restarting Emacs.
+    ;; Does the same thing as 'set-face-attribute default' above, but emacsclient fonts
+    ;; are not right unless I also add this method of setting the default font.
+;    (add-to-list 'default-frame-alist '(font . "JetBrains Mono-16"))
+
+    ;; Uncomment the following line if line spacing needs adjusting.
+    (setq-default line-spacing 0.12)
+#+end_src
+
+
+* keybinds
+#+begin_src emacs-lisp
+
+  ;; auto-fill mode kbd
+  (global-set-key (kbd "C-x C-a") 'auto-fill-mode)
+
+  ; ranger
+  (global-set-key (kbd "C-x r a") 'ranger)
+
+
+#+end_src
+
+
+* Dired
+#+begin_src emacs-lisp
+    (setq dired-listing-switches "-alt --dired --group-directories-first -h -G")
+
+  ;; icons
+    (use-package all-the-icons
+    :ensure t
+    :if (display-graphic-p))
+
+  (use-package all-the-icons-dired
+    :ensure t
+    :hook (dired-mode . (lambda () (all-the-icons-dired-mode t))))
+
+  ;; hide details
+  (add-hook 'dired-mode-hook 'dired-hide-details-mode)
+#+end_src
+
+
+
+* ranger
+#+begin_src emacs-lisp
+  (use-package ranger
+    :ensure t)
+
+  ;; configs
+  (setq ranger-cleanup-on-disable t)
+
+  ;; previews
+  (setq ranger-preview-file t)
+;;  (setq ranger-show-literal t)
+#+end_src
+
+
+* transpose-frame
+#+begin_src emacs-lisp
+  (use-package transpose-frame
+    :ensure t)
+#+end_src
+
+
+* AUCTeX                                                            
+#+begin_src emacs-lisp
+  (use-package auctex
+    :defer t
+    :ensure t)
+
+  (setq TeX-auto-save t)
+  (setq TeX-parse-self t)
+  (setq-default TeX-master nil)
+
+  (use-package auctex-latexmk
+    :defer t
+    :ensure t)
+
+  (require 'auctex-latexmk)
+    (auctex-latexmk-setup)
+#+end_src
+
+
+* Emacs Speaks Statistics
+#+begin_src emacs-lisp
+    (use-package ess
+      :ensure t
+      :init (require 'ess-site))
+#+end_src
+
+
+* pdf-tools
+es necesario instalarlo despues de package.el
+C-c C-r m activa el modo oscuro
+#+begin_src emacs-lisp
+  (use-package pdf-tools
+    :ensure t
+    :defer t)
+  
+  (pdf-tools-install)
+#+end_src
+
+
+* Org-mode                                                          
+
+** ToC
+#+begin_src emacs-lisp
+  (use-package toc-org
+      :ensure t
+      :commands toc-org-enable
+      :init (add-hook 'org-mode-hook 'toc-org-enable))
+#+end_src
+
+** Bullets
+#+begin_src emacs-lisp
+  (add-hook 'org-mode-hook 'org-indent-mode)
+  (use-package org-bullets
+    :ensure t)
+  
+  (add-hook 'org-mode-hook (lambda () (org-bullets-mode 1)))
+#+end_src
+
+
+
+
+
+** expansions
+
+| Typing the below + TAB | Expands to ...                          |
+|------------------------+-----------------------------------------|
+| <a                     | '#+BEGIN_EXPORT ascii' … '#+END_EXPORT  |
+| <c                     | '#+BEGIN_CENTER' … '#+END_CENTER'       |
+| <C                     | '#+BEGIN_COMMENT' … '#+END_COMMENT'     |
+| <e                     | '#+BEGIN_EXAMPLE' … '#+END_EXAMPLE'     |
+| <E                     | '#+BEGIN_EXPORT' … '#+END_EXPORT'       |
+| <h                     | '#+BEGIN_EXPORT html' … '#+END_EXPORT'  |
+| <l                     | '#+BEGIN_EXPORT latex' … '#+END_EXPORT' |
+| <q                     | '#+BEGIN_QUOTE' … '#+END_QUOTE'         |
+| <s                     | '#+BEGIN_SRC' … '#+END_SRC'             |
+| <v                     | '#+BEGIN_VERSE' … '#+END_VERSE'         |
+
+#+begin_src emacs-lisp
+(require 'org-tempo)
+#+end_src
+
+
+
+
+* previews in org
+
+#+begin_src emacs-lisp
+ (setq org-format-latex-options (plist-put org-format-latex-options :scale 2.4))
+#+end_src
+

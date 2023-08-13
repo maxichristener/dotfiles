@@ -1,0 +1,3 @@
+#+TITLE: Dotfiles
+
+Archivos de configuraciones varias para usar con =stow */=
