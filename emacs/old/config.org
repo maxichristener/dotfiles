@@ -238,33 +238,13 @@ C-c C-r m activa el modo oscuro
       :init (add-hook 'org-mode-hook 'toc-org-enable))
 #+end_src
 
-
 ** Bullets
 #+begin_src emacs-lisp
-    (add-hook 'org-mode-hook 'org-indent-mode)
-    (use-package org-bullets
-      :ensure t)
-
-    (add-hook 'org-mode-hook (lambda () (org-bullets-mode 1)))
-
-    ;; hides emphasis markers
-  ;  (setq org-hide-emphasis-markers t)
-
-    ; org mode font
-    (custom-theme-set-faces
-     'user
-     '(variable-pitch ((t (:family "Fira Sans" :height 180))))
-     '(fixed-pitch ((t ( :family "Fira Code" :height 160)))))
-      (add-hook 'org-mode-hook 'variable-pitch-mode)
-
-  ; colors
-  (setq org-emphasis-alist
-  '(("*" (bold :foreground "Orange" ))
-    ("/" (italic :foreground "Green"))
-    ("_" underline)
-    ("=" (:background "maroon" :foreground "white"))
-    ("~" (:background "deep sky blue" :foreground "MidnightBlue"))
-    ("+" (:strike-through t))))
+  (add-hook 'org-mode-hook 'org-indent-mode)
+  (use-package org-bullets
+    :ensure t)
+  
+  (add-hook 'org-mode-hook (lambda () (org-bullets-mode 1)))
 #+end_src
 
 
@@ -289,7 +269,6 @@ C-c C-r m activa el modo oscuro
 #+begin_src emacs-lisp
 (require 'org-tempo)
 #+end_src
-
 
 
 
