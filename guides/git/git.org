@@ -38,10 +38,10 @@ Si previamente se usaba otra llave GPG, la quitamos.
 git config --global --unset gpg.format
 #+end_verbatim
 
-Configuramos nuestra ID primaria en git (se presenta una como ejemplo,
-aparece luego de la barra en =sec=)
+Configuramos nuestra ID primaria en git, que aparece luego de la barra
+en =sec= al listar las claves (se presenta una como ejemplo)
 #+begin_verbatim
-gpg --list-secret-keys --keyid-format=long
+gpg --list-keys --keyid-format=long
 git config --global user.signingkey 3AA5C34371567BD2
 #+end_verbatim
 
@@ -49,6 +49,14 @@ Configuramos git para que firme automáticamente todos los commits
 #+begin_verbatim 
 git config --global commit.gpgsign true
 #+end_verbatim
+
+Asimismo, necesitamos especificar la clave pública en GitHub. Para
+conocerla, tenemos estas dos opciones: Con el =fingerprint= o la ID primaria.
+#+begin_verbatim 
+gpg --export -a FINGERPRINT
+gpg --armor --export 3AA5C34371567BD2
+#+end_verbatim
+
 
 * Usando Git
 
