@@ -4,3 +4,5 @@ Actualmente en proceso de reimplementación.
 
 - Archivos de configuraciones varias para usar con =stow */=
 - Los links para Emacs deben realizarse manualmente.
+
+  .
