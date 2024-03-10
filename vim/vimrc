@@ -1,0 +1,98 @@
+""" gvim settings ----
+unlet! skip_defaults_vim
+source $VIMRUNTIME/defaults.vim
+
+""" PLUGINS (arch packages list) ----
+"- vim-nerdtree
+"- vim-bufexplorer: Emacs-like buffer behaviour. \<Leader\>be normal open .\<Leader\>bt toggle open / close
+"- vim-ctrlp: fuzzy finder (extremely useful)
+"- vim-easymotion: \\w looks for word in the ENTIRE BUFFER. \\f looks for letters.
+"- vim-nerdcommenter: It has its own help txt. \cc, \cu, \cs, \c$, \cy
+"- vim-surround: Adds surround: cs, ys, ds. S in visualmode. help txt available.
+"- vim-latexsuite
+"
+"  OPTIONALS:
+"- vim-align: https://www.vim.org/scripts/script.php?script_id=294
+"- vim-tagbar: F8 toggles the function.
+"" tagbar
+"nmap <F9> :TagbarToggle<CR>
+
+"" SAVE THIS VIMRC IN
+set runtimepath^=$XDG_CONFIG_HOME/vim
+set runtimepath+=$XDG_DATA_HOME/vim
+set runtimepath+=$XDG_CONFIG_HOME/vim/after
+set packpath^=$XDG_DATA_HOME/vim,$XDG_CONFIG_HOME/vim
+set packpath+=$XDG_CONFIG_HOME/vim/after,$XDG_DATA_HOME/vim/after
+let g:netrw_home = $XDG_DATA_HOME."/vim"
+call mkdir($XDG_DATA_HOME."/vim/spell", 'p')
+set backupdir=$XDG_STATE_HOME/vim/backup | call mkdir(&backupdir, 'p')
+set directory=$XDG_STATE_HOME/vim/swap   | call mkdir(&directory, 'p')
+set undodir=$XDG_STATE_HOME/vim/undo     | call mkdir(&undodir,   'p')
+set viewdir=$XDG_STATE_HOME/vim/view     | call mkdir(&viewdir,   'p')
+if !has('nvim') | set viminfofile=$XDG_STATE_HOME/vim/viminfo | endif
+
+
+
+
+
+
+""" basic stuff
+colorscheme torte
+set mouse=a
+set relativenumber
+set linebreak
+set number
+set clipboard=unnamedplus
+set incsearch
+inoremap jk <esc>
+inoremap JK <esc>
+" dictionary
+set spelllang=es
+ "enable and disable
+ "set spell! 
+" ignore case
+"set ignorecase
+
+
+""" ST CONF
+" disable Background Color Erase (BCE) so that color schemes
+if &term =~ '256color'
+    set t_ut=
+endif
+set t_Co=256
+set termguicolors 
+
+
+"" LaTeX 
+filetype plugin indent on
+set grepprg=grep\ -nH\ $*
+let g:tex_flavor = "latex"
+" \item
+autocmd Filetype tex imap <C-l> <Plug>Tex_InsertItemOnThisLine
+
+
+"" HTML
+set nocompatible
+filetype plugin on
+
+autocmd FileType html inoremap ;g <></<++>><++>ba
+	"sections
+autocmd FileType html inoremap ;1 <h1></h1><++>k$F1T>i
+autocmd FileType html inoremap ;2 <h2></h2><++>k$F2T>i
+autocmd FileType html inoremap ;3 <h3></h3><++>k$F3T>i
+autocmd FileType html inoremap ;4 <h4></h4><++>k$F4T>i
+autocmd FileType html inoremap ;p <p></p><++>k$FpT>i
+	"text
+autocmd FileType html inoremap ;e <em></em><++>FeT>i
+autocmd FileType html inoremap ;b <strong></strong><++>FgT>i
+autocmd FileType html inoremap ;u <u></u><++>FuT>i
+	"href
+autocmd FileType html inoremap ;h <a href=""><++></a><++>F"i
+	"img
+autocmd FileType html inoremap ;i <img src="" alt="<++>" title="<++>"/><++>Fcf"a
+	"list
+autocmd FileType html inoremap ;o <ol>	<li></li>	<++></ol>2k$FiT>i
+autocmd FileType html inoremap ;u <ul>	<li></li>	<++></ul>2k$FiT>i
+autocmd FileType html inoremap <C-l> <li></li>	<++>k$FiT>i
+	" environments
+autocmd FileType html inoremap ;f <figure><><figcaption><++></figcaption></figure>2k$hi
