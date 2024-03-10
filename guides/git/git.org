@@ -11,7 +11,7 @@ SSH y GPG para hacer commits y firmarlos, respectivamente.
 
 Generamos una llave con algoritmo ed25519 y seguimos los pasos requeridos.
 #+begin_verbatim
-ssh-keygen -t ed25519 -C "your_email@example.com"
+ssh-keygen -t ed25519 -C "youremail@example.com"
 #+end_verbatim
 
 Ahora, antes de generar la llave /privada/ se necesita comenzar con el
@@ -38,8 +38,10 @@ Si previamente se usaba otra llave GPG, la quitamos.
 git config --global --unset gpg.format
 #+end_verbatim
 
-Configuramos nuestra ID primaria en git (se presenta una como ejemplo)
-#+begin_verbatim 
+Configuramos nuestra ID primaria en git (se presenta una como ejemplo,
+aparece luego de la barra en =sec=)
+#+begin_verbatim
+gpg --list-secret-keys --keyid-format=long
 git config --global user.signingkey 3AA5C34371567BD2
 #+end_verbatim
 
@@ -58,7 +60,8 @@ el output.
 git init
 #+end_verbatim
 
-Alternativamente, podemos hacer clonar un repositorio
+Alternativamente, podemos hacer clonar un repositorio. Es conveniente
+hacerlo con la versión SSH para pushear cambios.
 #+begin_verbatim 
 git clone REPO
 #+end_verbatim
@@ -67,7 +70,8 @@ git clone REPO
 
 Para obtener los últimos cambios realizados en nuestro repositorio,
 hacemos un =git pull=. También podemos especificar a qué rama o branch
-queremos realizar el pull, haciendo =git pull origin BRANCH=.
+queremos realizar el pull (=main= usualmente), haciendo =git pull origin
+BRANCH=.
 
 ** Realizando cambios
 
@@ -84,7 +88,8 @@ git commit -m "mensaje del commit"
 #+end_verbatim
 
 "Pusheamos" el "commit", es decir, enviamos los cambios confirmados a
-nuestro repositorio, en la branch que estamos trabajando
+nuestro repositorio, en la branch que estamos trabajando. Usualmente
+es =main=.
 #+begin_verbatim
 git push origin BRANCH
 #+end_verbatim
@@ -99,9 +104,15 @@ por defecto "origin".
 Entonces, el proceso consiste en avisarle a GitHub vía SSH que tenemos un
 remoto origin añadido en nuestra computadora. 
 #+begin_verbatim
-git remote add origin SSH
+git remote add origin SSH-DIR
 #+end_verbatim
 
+Si queremos eliminar un remote, por la razón que fuese (ejemplo,
+clonamos con HTTPS y queremos reescribir un remote, como origin, para
+hacer un push con SSH),
+#+begin_verbatim
+git remote remove origin
+#+end_verbatim
 
 * Extras
 
