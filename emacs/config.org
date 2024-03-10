@@ -280,6 +280,9 @@ Org-tempo agrega un snippet para escribir bloques en Org. A saber,
 
 
      ;; Dired
+     (use-package all-the-icons-dired
+             :ensure t)
+     (add-hook 'dired-mode-hook 'all-the-icons-dired-mode)
      (setq dired-listing-switches "-lt --dired --group-directories-first -h -G") ; lt es ordenado por tiempo
      (setq dired-guess-shell-alist-user
       '(("\\.\\(png\\|jpe?g\\|tiff\\)" "sxiv" "xdg-open") ; abrir con ! o &
