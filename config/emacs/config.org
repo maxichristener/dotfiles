@@ -61,242 +61,250 @@ Org-tempo agrega un snippet para escribir bloques en Org. A saber,
 * Código
 #+begin_src emacs-lisp
 
-  ;; MELPA
-  (require 'package)
-  (add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/") t)
-  (add-to-list 'package-archives '("melpa-stable" . "https://stable.melpa.org/packages/") t)
-  (package-initialize)
-  (setq package-pinned-packages '((all-the-icons . "melpa-stable")
-                                    (all-the-icons-dired . "melpa-stable")
-                                    (all-the-icons-completion . "melpa-stable")))
-
-  ;; evil mode
-  (use-package evil
-    :ensure t)
-  (require 'evil)
-  (evil-mode 1)
-  (setq evil-default-state 'emacs)
-  (define-key evil-insert-state-map (kbd "M-j") #'evil-normal-state)
+    ;; MELPA
+    (require 'package)
+    (add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/") t)
+    (add-to-list 'package-archives '("melpa-stable" . "https://stable.melpa.org/packages/") t)
+    (package-initialize)
+    (setq package-pinned-packages '((all-the-icons . "melpa-stable")
+                                      (all-the-icons-dired . "melpa-stable")
+                                      (all-the-icons-completion . "melpa-stable")))
 
 
-  ;; Font Settings
-  (set-face-attribute 'default nil :font "UbuntuMono Nerd Font" :height 160 :weight 'medium)
-  (set-face-attribute 'variable-pitch nil :font "DejaVu Sans" :height 160 :weight 'medium)
-  (set-face-attribute 'fixed-pitch nil :font "UbuntuMono Nerd Font" :height 160 :weight 'medium)
-  (setq-default line-spacing 0.12)
-  (set-face-attribute 'font-lock-comment-face nil :slant 'italic) ;; comentarios en itálica
-
-  ;; all-the-icons
-  (use-package all-the-icons
-  :ensure t
-  :if (display-graphic-p))
-  (use-package all-the-icons-completion :ensure t :defer t)
-  (all-the-icons-completion-mode)
+    ;; Font Settings
+    (set-face-attribute 'default nil :font "UbuntuMono Nerd Font" :height 160 :weight 'medium)
+    (set-face-attribute 'variable-pitch nil :font "DejaVu Sans" :height 160 :weight 'medium)
+    (set-face-attribute 'fixed-pitch nil :font "UbuntuMono Nerd Font" :height 160 :weight 'medium)
+    (setq-default line-spacing 0.12)
+    (set-face-attribute 'font-lock-comment-face nil :slant 'italic) ;; comentarios en itálica
 
 
-  ;; Keybindings, e.g, (keymap-set c-mode-map "C-S-l" 'function-name)
-  (keymap-global-set "C-x C-a" #'auto-fill-mode)
-  (setq parens-require-spaces nil) ;; para quitar los espacios de M-(
-
-  ;; company-mode
-  (use-package company :ensure t
-   :config (add-hook 'after-init-hook 'global-company-mode))
-
-  ;; eglot
-  (add-hook 'ess-mode-hook 'eglot-ensure)
-  (add-hook 'tex-mode-hook 'eglot-ensure)  
-  (add-hook 'bibtex-mode-hook 'eglot-ensure)
-
-  ;; spell
-  (setq ispell-program-name "hunspell")
-  (setq ispell-dictionary "es_AR")
-
-  ;; Appearance & misc
-  (setq inhibit-startup-screen t)
-  (tool-bar-mode -1)
-  (scroll-bar-mode -1)
-  (menu-bar-mode -1)
-  (blink-cursor-mode -1)
-  (delete-selection-mode +1)
-  (global-goto-address-mode +1)
-  (set-face-attribute 'default nil :height 138) ; default zoom
-  (add-to-list 'default-frame-alist '(alpha-background . 92)) ; transparency
-  (setq case-fold-search t) ; case-insensitive search
-  (setq sentence-end-double-space nil)
-  ;; Theme
-  (setq modus-themes-paren-match '(bold intense)
-        modus-themes-scale-headings t
-        modus-themes-headings
-        '((1 . (rainbow bold))
-          (2 . (rainbow bold))))
-  ;;      (3 . (rainbow bold 1.2))
-  ;;      (t . (semilight 1.1)))
-  ;; theme
-  (load-theme 'modus-vivendi t)
-  ;; number styling
-  (setq display-line-numbers-type 'relative)
-  (global-display-line-numbers-mode 1)  
-  ;; Enable Auto-save and Backup Files in Specified Directory
-  (setq auto-save-default t) ; Enable auto-save
-  (setq make-backup-files t) ; Enable backup files
-  (setq auto-save-file-name-transforms
-        `((".*" ,(expand-file-name "~/.config/emacs/autosaves/") t)))
-  (setq backup-directory-alist
-        `(("." . ,(expand-file-name "~/.config/emacs/backups/"))))
-
-
-  ;; AUCTeX
-  (setq-default TeX-master nil)
-  (setq TeX-auto-save t)
-  (setq TeX-parse-self t)
-  (add-hook 'LaTeX-mode-hook 'auto-fill-mode)
-  ; reftex
-  (add-hook 'LaTeX-mode-hook 'turn-on-reftex) ; reftex
-    (setq reftex-plug-into-AUCTeX t)
-   ; zathura and synctex
-  (require 'tex)
-  (add-hook 'LaTeX-mode-hook 'TeX-source-correlate-mode)
-  (setq TeX-PDF-mode t
-        TeX-source-correlate-mode t
-        TeX-source-correlate-start-server t)
-  (add-to-list 'TeX-expand-list
-               '("%sn" (lambda () server-name)))
-  (add-to-list 'TeX-view-program-list
-               '("Zathura"
-                 ("zathura %o"
-                  (mode-io-correlate " --synctex-forward %n:0:\"%b\" -x \"emacsclient --socket-name=%sn +%{line} %{input}\""))
-                 "zathura"))
-  (setcar (cdr (assoc 'output-pdf TeX-view-program-selection)) "Zathura")
-
-
-
-  ;; ESS
-  (use-package ess :ensure t)
-  (org-babel-do-load-languages 'org-babel-load-languages '((R . t)))
-  (setq ess-swv-pdflatex-commands
-        '((output-pdf "pdflatex -interaction nonstopmode -encoding utf8 %S%(PDFout)")))
-  (setq ess-swv-pdflatex-options
-        '("-shell-escape" "-file-line-error" "-synctex=1"))
-  (setq ess-swv-weave-options
-        '(("noweb" "yes" "encoding" "utf8")))
-  (show-paren-mode)
-  ; keybinds Rdired buffer with F9:
-  (add-hook 'ess-r-mode-hook
-          (lambda ()
-             (local-set-key (kbd "<f9>") #'ess-rdired)))
-  (add-hook 'ess-rdired-mode-hook
-          (lambda ()
-             (local-set-key (kbd "<f9>") #'kill-buffer-and-window)))
-  ; pane configs
-  (setq display-buffer-alist
-      '(("*R Dired"
-         (display-buffer-reuse-window display-buffer-at-bottom)
-         (window-width . 0.5)
-         (window-height . 0.25)
-         (reusable-frames . nil))
-        ("*R"
-         (display-buffer-reuse-window display-buffer-in-side-window)
-         (side . right)
-         (slot . -1)
-         (window-width . 0.5)
-         (reusable-frames . nil))
-        ("*Help"
-         (display-buffer-reuse-window display-buffer-in-side-window)
-         (side . right)
-         (slot . 1)
-         (window-width . 0.5)
-         (reusable-frames . nil))) )
-
-
-  ;; Python
-  (add-hook 'python-mode-hook
-            (lambda ()
-              (define-key python-mode-map (kbd "C-<return>") #'python-shell-send-statement)
-              (define-key python-mode-map (kbd "C-c C-e") nil)))
-
-
-
-
-
-  ;;
-  ;; Org-mode
-                                          ; Appearance
-  (setq org-format-latex-options (plist-put org-format-latex-options :scale 2.4))
-  (setq org-hide-emphasis-markers t)
-  (custom-theme-set-faces
-   'user
-   '(variable-pitch ((t (:family "UbuntuMono Nerd Font" :height 180))))
-   '(fixed-pitch ((t (:family "UbuntuMono Nerd Font" :height 160)))))
-  (add-hook 'org-mode-hook 'variable-pitch-mode)
-  (setq org-emphasis-alist
-        '(("*" (bold :foreground "Orange"))
-          ("/" (italic :foreground "Green"))
-          ("_" underline)
-          ("=" (:background "maroon" :foreground "white"))
-          ("~" (:background "deep sky blue" :foreground "MidnightBlue"))
-          ("+" (:strike-through t))))
-  (setq org-hide-emphasis-markers t)
-  (dolist (face '((org-level-1 . 1.2)
-                  (org-level-2 . 1.1)
-                  (org-level-3 . 1.05)
-                  (org-level-4 . 1.0)
-                  (org-level-5 . 1.1)
-                  (org-level-6 . 1.1)
-                  (org-level-7 . 1.1)
-                  (org-level-8 . 1.1)))
-    (set-face-attribute (car face) nil
-                        :font "UbuntuMono Nerd Font"
-                        :weight 'medium
-                        :height (cdr face)))
-  (setq header-line-format nil)
-                                          ; Presentation in Org-mode
-  (use-package org-tree-slide :ensure t :custom (org-image-actual-width nil))
-                                          ; TOC
-  (use-package toc-org :ensure t :commands toc-org-enable)
-  (add-hook 'org-mode-hook 'toc-org-enable)
-  (add-hook 'org-mode-hook 'org-indent-mode)
-                                          ; Bullets
-  (use-package org-bullets :ensure t)
-  (add-hook 'org-mode-hook (lambda () (org-bullets-mode 1)))
-                                          ; Presentations
-  (use-package org-tree-slide
+    ;; all-the-icons
+    (use-package all-the-icons
     :ensure t
-    :custom (org-image-actual-width nil))
-  (setq header-line-format " ")
-                                          ; en html
-  (use-package ox-reveal
-    :ensure t)
-   ;
-  (require 'org-tempo)
-  ;;
+    :if (display-graphic-p))
+    (use-package all-the-icons-completion :ensure t :defer t)
+    (all-the-icons-completion-mode)
+
+
+    ;; Dired
+    (with-eval-after-load 'dired
+      (require 'dired-x)
+    ; Set dired-x global variables here. For example: (setq dired-x-hands-off-my-keys nil)
+    )
+    (setq dired-listing-switches
+          "-lt --dired --group-directories-first -h -G") ; lt es ordenado por tiempo
+    (setq dired-dwim-target t) ; para copiar en la otra ventana
+    (add-hook 'dired-mode-hook
+              'dired-hide-details-mode (lambda () (dired-omit-mode)))
+    (file-name-shadow-mode 1)
+    ;
+    (use-package all-the-icons-dired
+          :ensure t)
+    (add-hook 'dired-mode-hook 'all-the-icons-dired-mode)
+    ;
+    (setq dired-guess-shell-alist-user
+     '(("\\.\\(png\\|jpe?g\\|tiff\\)" "sxiv" "xdg-open") ; abrir con ! o &
+       ("\\.\\(mp[34]\\|m4a\\|ogg\\|flac\\|webm\\|mkv\\)" "mpv" "xdg-open")
+               (".*" "xdg-open")))
+
+
+    ;; Keybindings, e.g, (keymap-set c-mode-map "C-S-l" 'function-name)
+    (keymap-global-set "C-x C-a" #'auto-fill-mode)
+    (setq parens-require-spaces nil) ;; para quitar los espacios de M-(
+
+    ;; company-mode
+    (use-package company :ensure t
+     :config (add-hook 'after-init-hook 'global-company-mode))
+
+    ;; eglot
+    (add-hook 'ess-mode-hook 'eglot-ensure)
+    (add-hook 'tex-mode-hook 'eglot-ensure)  
+    (add-hook 'bibtex-mode-hook 'eglot-ensure)
+
+    ;; spell
+    (setq ispell-program-name "hunspell")
+    (setq ispell-dictionary "es_AR")
+
+    ;; Appearance & misc
+    (setq inhibit-startup-screen t)
+    (tool-bar-mode -1)
+    (scroll-bar-mode -1)
+    (menu-bar-mode -1)
+    (blink-cursor-mode -1)
+    (delete-selection-mode +1)
+    (global-goto-address-mode +1)
+    (set-face-attribute 'default nil :height 138) ; default zoom
+    (add-to-list 'default-frame-alist '(alpha-background . 92)) ; transparency
+    (setq case-fold-search t) ; case-insensitive search
+    (setq sentence-end-double-space nil)
+    ;; Theme
+    (setq modus-themes-paren-match '(bold intense)
+          modus-themes-scale-headings t
+          modus-themes-headings
+          '((1 . (rainbow bold))
+            (2 . (rainbow bold))))
+    ;;      (3 . (rainbow bold 1.2))
+    ;;      (t . (semilight 1.1)))
+    ;; theme
+    (load-theme 'modus-vivendi t)
+    ;; number styling
+    (setq display-line-numbers-type 'relative)
+    (global-display-line-numbers-mode 1)  
+    ;; Enable Auto-save and Backup Files in Specified Directory
+    (setq auto-save-default t) ; Enable auto-save
+    (setq make-backup-files t) ; Enable backup files
+    (setq auto-save-file-name-transforms
+          `((".*" ,(expand-file-name "~/.config/emacs/autosaves/") t)))
+    (setq backup-directory-alist
+          `(("." . ,(expand-file-name "~/.config/emacs/backups/"))))
+
+
+    ;; AUCTeX
+    (setq-default TeX-master nil)
+    (setq TeX-auto-save t)
+    (setq TeX-parse-self t)
+    (add-hook 'LaTeX-mode-hook 'auto-fill-mode)
+    ; reftex
+    (add-hook 'LaTeX-mode-hook 'turn-on-reftex) ; reftex
+      (setq reftex-plug-into-AUCTeX t)
+     ; zathura and synctex
+    (require 'tex)
+    (add-hook 'LaTeX-mode-hook 'TeX-source-correlate-mode)
+    (setq TeX-PDF-mode t
+          TeX-source-correlate-mode t
+          TeX-source-correlate-start-server t)
+    (add-to-list 'TeX-expand-list
+                 '("%sn" (lambda () server-name)))
+    (add-to-list 'TeX-view-program-list
+                 '("Zathura"
+                   ("zathura %o"
+                    (mode-io-correlate " --synctex-forward %n:0:\"%b\" -x \"emacsclient --socket-name=%sn +%{line} %{input}\""))
+                   "zathura"))
+    (setcar (cdr (assoc 'output-pdf TeX-view-program-selection)) "Zathura")
 
 
 
-  ;; vterm
-  (use-package vterm
-    :ensure t)
+    ;; ESS
+    (use-package ess :ensure t)
+    (org-babel-do-load-languages 'org-babel-load-languages '((R . t)))
+    (setq ess-swv-pdflatex-commands
+          '((output-pdf "pdflatex -interaction nonstopmode -encoding utf8 %S%(PDFout)")))
+    (setq ess-swv-pdflatex-options
+          '("-shell-escape" "-file-line-error" "-synctex=1"))
+    (setq ess-swv-weave-options
+          '(("noweb" "yes" "encoding" "utf8")))
+    (show-paren-mode)
+    ; keybinds Rdired buffer with F9:
+    (add-hook 'ess-r-mode-hook
+            (lambda ()
+               (local-set-key (kbd "<f9>") #'ess-rdired)))
+    (add-hook 'ess-rdired-mode-hook
+            (lambda ()
+               (local-set-key (kbd "<f9>") #'kill-buffer-and-window)))
+    ; pane configs
+    (setq display-buffer-alist
+        '(("*R Dired"
+           (display-buffer-reuse-window display-buffer-at-bottom)
+           (window-width . 0.5)
+           (window-height . 0.25)
+           (reusable-frames . nil))
+          ("*R"
+           (display-buffer-reuse-window display-buffer-in-side-window)
+           (side . right)
+           (slot . -1)
+           (window-width . 0.5)
+           (reusable-frames . nil))
+          ("*Help"
+           (display-buffer-reuse-window display-buffer-in-side-window)
+           (side . right)
+           (slot . 1)
+           (window-width . 0.5)
+           (reusable-frames . nil))) )
 
-  
-  ;; Dired
-  (use-package all-the-icons-dired
-        :ensure t)
-  (add-hook 'dired-mode-hook 'all-the-icons-dired-mode)
-  (setq dired-listing-switches "-lt --dired --group-directories-first -h -G") ; lt es ordenado por tiempo
-  (setq dired-guess-shell-alist-user
-   '(("\\.\\(png\\|jpe?g\\|tiff\\)" "sxiv" "xdg-open") ; abrir con ! o &
-     ("\\.\\(mp[34]\\|m4a\\|ogg\\|flac\\|webm\\|mkv\\)" "mpv" "xdg-open")
-             (".*" "xdg-open")))
-  (setq dired-dwim-target t) ; para copiar en la otra ventana
-  (add-hook 'dired-mode-hook 'dired-hide-details-mode)
-  (add-hook 'dired-mode-hook (lambda () (dired-omit-mode)))
-  ; 
-  (file-name-shadow-mode 1)
+
+    ;; Python
+    (add-hook 'python-mode-hook
+              (lambda ()
+                (define-key python-mode-map (kbd "C-<return>") #'python-shell-send-statement)
+                (define-key python-mode-map (kbd "C-c C-e") nil)))
 
 
-  ;; PDF Tools
-  (use-package pdf-tools :ensure t :defer t)
-  (pdf-tools-install)
-  (add-hook 'pdf-view-mode-hook (lambda () (display-line-numbers-mode -1)))
+
+
+
+    ;;
+    ;; Org-mode
+                                            ; Appearance
+    (setq org-format-latex-options (plist-put org-format-latex-options :scale 2.4))
+    (setq org-hide-emphasis-markers t)
+    (custom-theme-set-faces
+     'user
+     '(variable-pitch ((t (:family "UbuntuMono Nerd Font" :height 180))))
+     '(fixed-pitch ((t (:family "UbuntuMono Nerd Font" :height 160)))))
+    (add-hook 'org-mode-hook 'variable-pitch-mode)
+    (setq org-emphasis-alist
+          '(("*" (bold :foreground "Orange"))
+            ("/" (italic :foreground "Green"))
+            ("_" underline)
+            ("=" (:background "maroon" :foreground "white"))
+            ("~" (:background "deep sky blue" :foreground "MidnightBlue"))
+            ("+" (:strike-through t))))
+    (setq org-hide-emphasis-markers t)
+    (dolist (face '((org-level-1 . 1.2)
+                    (org-level-2 . 1.1)
+                    (org-level-3 . 1.05)
+                    (org-level-4 . 1.0)
+                    (org-level-5 . 1.1)
+                    (org-level-6 . 1.1)
+                    (org-level-7 . 1.1)
+                    (org-level-8 . 1.1)))
+      (set-face-attribute (car face) nil
+                          :font "UbuntuMono Nerd Font"
+                          :weight 'medium
+                          :height (cdr face)))
+    (setq header-line-format nil)
+                                            ; Presentation in Org-mode
+    (use-package org-tree-slide :ensure t :custom (org-image-actual-width nil))
+                                            ; TOC
+    (use-package toc-org :ensure t :commands toc-org-enable)
+    (add-hook 'org-mode-hook 'toc-org-enable)
+    (add-hook 'org-mode-hook 'org-indent-mode)
+                                            ; Bullets
+    (use-package org-bullets :ensure t)
+    (add-hook 'org-mode-hook (lambda () (org-bullets-mode 1)))
+                                            ; Presentations
+    (use-package org-tree-slide
+      :ensure t
+      :custom (org-image-actual-width nil))
+    (setq header-line-format " ")
+                                            ; en html
+    (use-package ox-reveal
+      :ensure t)
+     ;
+    (require 'org-tempo)
+    ;;
+
+
+
+    ;; vterm
+    (use-package vterm
+      :ensure t)
+
+
+    ;; evil mode
+    (use-package evil
+      :ensure t)
+    (require 'evil)
+    (evil-mode 1)
+    (setq evil-default-state 'emacs)
+    (define-key evil-insert-state-map (kbd "M-j") #'evil-normal-state)
+
+
+    ;; PDF Tools
+    (use-package pdf-tools :ensure t :defer t)
+    (pdf-tools-install)
+    (add-hook 'pdf-view-mode-hook (lambda () (display-line-numbers-mode -1)))
 
 
 
