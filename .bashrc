@@ -18,13 +18,15 @@ export GPG_TTY=$(tty)
 ### ALIAS
 
 alias tem="emacsclient -nw"
+alias em="emacsclient -nc"
 #alias vim="nvim"
 alias ls="ls --color=auto"
 alias vdir="vdir -h --color=auto"
 alias grep="grep --color=auto"
 alias clip="xclip -selection clipboard"
-alias u="ranger /run/media/maxi/"
+alias u="cd /run/media/maxi/"
 alias ra="ranger"
+alias ri="rifle"
 alias jl="julia"
 alias gpglist="gpg --list-keys --keyid-format=long"
 
