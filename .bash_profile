@@ -22,7 +22,7 @@
 [[ -f ~/.bashrc ]] && source ~/.bashrc
 
 ### Default programs exports
-export EDITOR="nvim"
+export EDITOR="vim"
 export TERMINAL="st"
 export TERMINAL_PROG="st"
 export BROWSER="firefox"

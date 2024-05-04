@@ -5,12 +5,19 @@
 ### If not running interactively, don't do anything
 [[ $- != *i* ]] && return
 
+if [[ -r /usr/share/bash-completion/bash_completion ]]; then
+  . /usr/share/bash-completion/bash_completion
+fi
+
 
 ### MISC
 ## ranger
 RANGER_LOAD_DEFAULT_RC=false
+export OPENER='rifle'
+export EDITOR='vim'
 ## completion in sudo
 complete -cf sudo
+complete -cf ri
 ## gpg
 export GPG_TTY=$(tty)
 
@@ -20,7 +27,8 @@ export GPG_TTY=$(tty)
 alias tem="emacsclient -nw"
 alias em="emacsclient -nc"
 #alias vim="nvim"
-alias ls="ls --color=auto"
+alias ls="lsd -X"
+alias tre="lsd --tree"
 alias vdir="vdir -h --color=auto"
 alias grep="grep --color=auto"
 alias clip="xclip -selection clipboard"
@@ -46,3 +54,5 @@ PS1="\[\033[01;32m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]\$ "
 # \[\033[00m\]: This resets the color to the default terminal color (00m).
 # \[\033[01;34m\]: This sets the color to bright blue (01;34m). The 01 is for bold/bright, and 34 is for blue.
 # \[\033[00m\]: This resets the color to the default terminal color (00m).
+
+
