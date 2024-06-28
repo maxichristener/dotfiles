@@ -1,0 +1,3 @@
+test -f ~/.config/x11/Xkeymap && xkbcomp ~/.config/x11/Xkeymap $DISPLAY &
+xrdb -load ~/.config/x11/Xresources & feh --no-fehbg --bg-scale /usr/share/backgrounds/archlinux/landscape.jpg &
+exec goblocks & exec dwm

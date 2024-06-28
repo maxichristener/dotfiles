@@ -1,11 +1,7 @@
 #+TITLE: Dotfiles
 
-Estos son mis archivos de configuración. Probablemente los más importantes sean
+Estos son mis archivos de configuración. 
 
-- =dotfiles/config/emacs/config.org=: La configuración para Emacs en un solo =.org=.
-- =.bash_profile= y =.bashrc=: Incluyen muchos comentarios y es bastante sugestivo acerca de como organizar =~=.
-
-La idea principal es actualizar las configuraciones con hard links.
-Este repositorio también incluye una carpeta llamada =guides=, que tiene
-unos apuntes sobre GPG y Git, pero están pendientes de moverse a otro
-lugar más apropiado.
+El repositorio también incluye una carpeta llamada =guides= con
+unos apuntes sobre GPG y Git. En un futuro indefinido los voy a mover a otro
+lado.
