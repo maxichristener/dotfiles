@@ -35,6 +35,7 @@ export GPG_TTY=$(tty)
 export GCC_COLORS='error=01;31:warning=01;35:note=01;36:caret=01;32:locus=01:quote=01'
 
 ### ALIAS
+alias ff="fastfetch"
 alias vim="nvim"
 alias lf="lfub"
 alias tem="emacsclient -nw"
