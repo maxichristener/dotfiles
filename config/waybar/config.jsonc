@@ -1,0 +1,46 @@
+{
+"layer": "top",	
+"position": "top",
+"height": 26,
+
+"bar_id": "bar-0",
+"ipc": true,
+
+"modules-left": ["sway/workspaces","sway/mode"],
+"modules-center": ["sway/window"],
+"modules-right": ["wireplumber","clock"],
+
+"sway/workspaces": {
+		"disable-scroll": false,
+		"disable-markup": true,
+		"format": "{index}" 
+},
+
+"sway/mode": { 
+  "format": "{}"
+},
+
+"sway/window": {
+	"format": "{}",
+	"max-length": 150
+},
+
+"wireplumber": {
+    "format": "{volume}% {icon}",
+    "format-muted": "",
+    "on-click": "helvum",
+    "format-icons": ["", "", ""]
+},
+
+"clock": {
+        "timezone": "America/Argentina/Tucuman",
+        "tooltip-format": "<big>{:%Y %B}</big>\n<tt><small>{calendar}</small></tt>",
+        "format-alt": "{:%a %b %d %Y %H:%M}"
+},
+
+            
+"on-click": "blueman-manager"    
+
+}
+
+}

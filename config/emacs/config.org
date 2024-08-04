@@ -8,7 +8,7 @@
 Esta es mi configuración de GNU Emacs.
 
 ** Instalación
-Una vez hecha la instación de GNU Emacs (vanilla), se instalan
+Una vez hecha la instación de GNU Emacs (vanilla), se verifican
 dependencias necesarias: =cmake=, =libvterm=, =hunspell= y =hunspell-es_ar=.
 Tener también en cuenta la fuente.
 
@@ -24,7 +24,7 @@ en nuestro archivo =init.el= debemos escribir
 #+end_example
 
 Ya podemos iniciar Emacs por primera vez. Tras hacerlo, correr =M-x
-all-the-icons-install-fonts= y, en Bash, =fc-cache -f -v=.
+all-the-icons-install-fonts= y, en shell, =fc-cache -f -v=.
 
 ** Algunas características
 
@@ -59,8 +59,9 @@ Org-tempo agrega un snippet para escribir bloques en Org. A saber,
 
 
 * Código
-#+begin_src emacs-lisp
 
+** General
+#+begin_src emacs-lisp
   ;; MELPA
   (require 'package)
   (add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/") t)
@@ -70,14 +71,12 @@ Org-tempo agrega un snippet para escribir bloques en Org. A saber,
                                     (all-the-icons-dired . "melpa-stable")
                                     (all-the-icons-completion . "melpa-stable")))
 
-
   ;; Font Settings
-  (set-face-attribute 'default nil :font "Source Code Pro" :height 160 :weight 'medium)
-  (set-face-attribute 'variable-pitch nil :font "Source Code Pro" :height 160 :weight 'medium)
-  (set-face-attribute 'fixed-pitch nil :font "Source Code Pro" :height 160 :weight 'medium)
+  (set-face-attribute 'default nil :font "SauceCodePro NF" :height 160 :weight 'medium)
+  (set-face-attribute 'variable-pitch nil :font "SauceCodePro NF" :height 160 :weight 'medium)
+  (set-face-attribute 'fixed-pitch nil :font "SauceCodePro NF" :height 160 :weight 'medium)
   (setq-default line-spacing 0.12)
   (set-face-attribute 'font-lock-comment-face nil :slant 'italic) ;; comentarios en itálica
-
 
   ;; all-the-icons
   (use-package all-the-icons
@@ -85,7 +84,6 @@ Org-tempo agrega un snippet para escribir bloques en Org. A saber,
   :if (display-graphic-p))
   (use-package all-the-icons-completion :ensure t :defer t)
   (all-the-icons-completion-mode)
-
 
   ;; Dired
   (with-eval-after-load 'dired
@@ -108,14 +106,9 @@ Org-tempo agrega un snippet para escribir bloques en Org. A saber,
      ("\\.\\(mp[34]\\|m4a\\|ogg\\|flac\\|webm\\|mkv\\)" "mpv" "xdg-open")
              (".*" "xdg-open")))
 
-
   ;; Keybindings, e.g, (keymap-set c-mode-map "C-S-l" 'function-name)
   (keymap-global-set "C-x C-a" #'auto-fill-mode)
   (setq parens-require-spaces nil) ;; para quitar los espacios de M-(
-
-  ;; company-mode
-  (use-package company :ensure t
-   :config (add-hook 'after-init-hook 'global-company-mode))
 
   ;; eglot
   (add-hook 'ess-mode-hook 'eglot-ensure)
@@ -125,6 +118,14 @@ Org-tempo agrega un snippet para escribir bloques en Org. A saber,
   ;; spell
   (setq ispell-program-name "hunspell")
   (setq ispell-dictionary "es_AR")
+
+  ;; Enable Auto-save and Backup Files in Specified Directory
+  (setq auto-save-default t) ; Enable auto-save
+  (setq make-backup-files t) ; Enable backup files
+  (setq auto-save-file-name-transforms
+        `((".*" ,(expand-file-name "~/.config/emacs/autosaves/") t)))
+  (setq backup-directory-alist
+        `(("." . ,(expand-file-name "~/.config/emacs/backups/"))))
 
   ;; Appearance & misc
   (setq inhibit-startup-screen t)
@@ -138,28 +139,25 @@ Org-tempo agrega un snippet para escribir bloques en Org. A saber,
   (add-to-list 'default-frame-alist '(alpha-background . 92)) ; transparency
   (setq case-fold-search t) ; case-insensitive search
   (setq sentence-end-double-space nil)
+
   ;; Theme
   (setq modus-themes-paren-match '(bold intense)
         modus-themes-scale-headings t
         modus-themes-headings
         '((1 . (rainbow bold))
           (2 . (rainbow bold))))
-  ;;      (3 . (rainbow bold 1.2))
-  ;;      (t . (semilight 1.1)))
-  ;; theme
+  ;;;     (3 . (rainbow bold 1.2))
+  ;;;      (t . (semilight 1.1)))
+  ; selecting modus theme
   (load-theme 'modus-vivendi t)
-  ;; number styling
+  ; number styling
   (setq display-line-numbers-type 'relative)
-  (global-display-line-numbers-mode 1)  
-  ;; Enable Auto-save and Backup Files in Specified Directory
-  (setq auto-save-default t) ; Enable auto-save
-  (setq make-backup-files t) ; Enable backup files
-  (setq auto-save-file-name-transforms
-        `((".*" ,(expand-file-name "~/.config/emacs/autosaves/") t)))
-  (setq backup-directory-alist
-        `(("." . ,(expand-file-name "~/.config/emacs/backups/"))))
+  (global-display-line-numbers-mode 1)
+#+end_src
 
 
+** LaTeX, R, Python, PDFs, etc.
+#+begin_src emacs-lisp
   ;; AUCTeX
   (setq-default TeX-master nil)
   (setq TeX-command "lualatex")
@@ -170,20 +168,25 @@ Org-tempo agrega un snippet para escribir bloques en Org. A saber,
   (add-hook 'LaTeX-mode-hook 'turn-on-reftex) ; reftex
     (setq reftex-plug-into-AUCTeX t)
    ; zathura and synctex
-  (require 'tex)
-  (add-hook 'LaTeX-mode-hook 'TeX-source-correlate-mode)
-  (setq TeX-PDF-mode t
-        TeX-source-correlate-mode t
-        TeX-source-correlate-start-server t)
-  (add-to-list 'TeX-expand-list
-               '("%sn" (lambda () server-name)))
-  (add-to-list 'TeX-view-program-list
-               '("Zathura"
-                 ("zathura %o"
-                  (mode-io-correlate " --synctex-forward %n:0:\"%b\" -x \"emacsclient --socket-name=%sn +%{line} %{input}\""))
-                 "zathura"))
-  (setcar (cdr (assoc 'output-pdf TeX-view-program-selection)) "Zathura")
+;  (require 'tex)
+;  (add-hook 'LaTeX-mode-hook 'TeX-source-correlate-mode)
+;  (setq TeX-PDF-mode t
+;        TeX-source-correlate-mode t
+;        TeX-source-correlate-start-server t)
+;  (add-to-list 'TeX-expand-list
+;               '("%sn" (lambda () server-name)))
+;  (add-to-list 'TeX-view-program-list
+;               '("Zathura"
+;                 ("zathura %o"
+;                  (mode-io-correlate " --synctex-forward %n:0:\"%b\" -x \"emacsclient --socket-name=%sn +%{line} %{input}\""))
+;                 "zathura"))
+;  (setcar (cdr (assoc 'output-pdf TeX-view-program-selection)) "Zathura")
 
+
+  ;; PDF Tools
+  (use-package pdf-tools :ensure t :defer t)
+  (pdf-tools-install)
+  (add-hook 'pdf-view-mode-hook (lambda () (display-line-numbers-mode -1)))
 
 
   ;; ESS
@@ -230,19 +233,18 @@ Org-tempo agrega un snippet para escribir bloques en Org. A saber,
               (define-key python-mode-map (kbd "C-<return>") #'python-shell-send-statement)
               (define-key python-mode-map (kbd "C-c C-e") nil)))
 
+#+end_src
 
-
-
-
-  ;;
-  ;; Org-mode
+** Org-mode
+#+begin_src emacs-lisp
+;; org
                                           ; Appearance
   (setq org-format-latex-options (plist-put org-format-latex-options :scale 2.4))
   (setq org-hide-emphasis-markers t)
   (custom-theme-set-faces
    'user
-   '(variable-pitch ((t (:family "Source Code Pro" :height 180))))
-   '(fixed-pitch ((t (:family "Source Code Pro" :height 160)))))
+   '(variable-pitch ((t (:family "SauceCodePro NF" :height 180))))
+   '(fixed-pitch ((t (:family "SauceCodePro NF" :height 160)))))
   (add-hook 'org-mode-hook 'variable-pitch-mode)
   (setq org-emphasis-alist
         '(("*" (bold :foreground "Orange"))
@@ -261,7 +263,7 @@ Org-tempo agrega un snippet para escribir bloques en Org. A saber,
                   (org-level-7 . 1.1)
                   (org-level-8 . 1.1)))
     (set-face-attribute (car face) nil
-                        :font "Source Code Pro"
+                        :font "SauceCodePro NF"
                         :weight 'medium
                         :height (cdr face)))
   (setq header-line-format nil)
@@ -285,29 +287,26 @@ Org-tempo agrega un snippet para escribir bloques en Org. A saber,
    ;
   (require 'org-tempo)
   ;;
+#+end_src
 
-
+** Unused
+  Bloques comentados que ya no se usan
+#+begin_src emacs-lisp
+  ;; company-mode
+;;  (use-package company :ensure t
+;;   :config (add-hook 'after-init-hook 'global-company-mode))
 
   ;; vterm
-  (use-package vterm
-    :ensure t)
-
+;;  (use-package vterm
+;;    :ensure t)
 
   ;; evil mode
-  (use-package evil
-    :ensure t)
-  (require 'evil)
-  (evil-mode 1)
-  (setq evil-default-state 'emacs)
-  (define-key evil-insert-state-map (kbd "M-j") #'evil-normal-state)
-
-
-  ;; PDF Tools
-  (use-package pdf-tools :ensure t :defer t)
-  (pdf-tools-install)
-  (add-hook 'pdf-view-mode-hook (lambda () (display-line-numbers-mode -1)))
-
-
-
+;;  (use-package evil
+;;    :ensure t)
+;;  (require 'evil)
+;;  (evil-mode 1)
+;;  (setq evil-default-state 'emacs)
+;;  (define-key evil-insert-state-map (kbd "M-j") #'evil-normal-state)
+;;
 #+end_src
 
