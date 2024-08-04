@@ -1,0 +1,44 @@
+#!/bin/sh
+## Para LaTeX: Abre proyectos existentes o crea nuevos.
+## TODO: Add terminal commands, perhaps for replacing interaction
+TEXFOLD="/home/${USER}/docs/tex"
+
+body() {
+printf '\\documentclass[12pt]{article}
+\usepackage[spanish]{babel}
+<++>
+
+\\title{<++>}
+\\author{Maximiliano Christener}
+\date{}
+
+\\begin{document}
+\maketitle
+
+<++>
+\end{document}\n'
+}
+
+docstex(){
+printf "LaTeX\n\nPresione\n\t- 1, para listar y abrir un proyecto existente.\n\t- 2, para crear uno nuevo.\n" ; read a ; printf ""
+case $a in
+	1 ) 
+		printf "Escriba el nombre del proyecto para abrirlo\n" ; cd $TEXFOLD
+		b="$(ls -d -1 * | dmenu -i -l 10)"
+		vim "$b"/"$b".tex
+		;;
+	2 )
+	 	printf "Inserte el nombre del proyecto nuevo:\n" ; read n
+         	mkdir -p ${TEXFOLD}/"$n"
+		body >> ${TEXFOLD}/"$n"/"$n".tex
+         	vim ${TEXFOLD}/"$n"/"$n".tex
+		;;
+	[!12]*) 
+		printf "Error. Reintentá.\n" ; docstex
+		;;
+esac
+}
+
+# Main
+docstex
+exit 0

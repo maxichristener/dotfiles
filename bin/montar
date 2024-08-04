@@ -1,0 +1,15 @@
+#!/bin/sh
+# TODO: Incorporar la posibilidad de montar otros pendrives. 
+set -e
+
+pend='pend'
+pendnumber=1
+
+# TODO: Hacer esta línea más eficiente
+disco=$(lsblk | sed -n /28/p | sed -n 1p | awk '{ print $1 }')
+
+sudo cryptsetup open /dev/${disco}${pendnumber} ${pend} &&
+       	mount /dev/mapper/${pend} || exit 1
+echo "Montado exitosamente" 
+
+exit 0

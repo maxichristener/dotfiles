@@ -1,0 +1,6 @@
+#!/bin/sh
+
+case $2 in
+	l ) curl "wttr.in/${1:-Corrientes}";;
+	* ) curl "wttr.in/${1:-Corrientes}?format=3";;
+esac

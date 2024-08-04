@@ -1,42 +1,34 @@
 # maxi's ~/.zprofile
-## DEFINICIONES
-### ~/.zprofile:
-## Este archivo se carga solo una vez cuando se
-# inicia la sesión, es decir, cuando un usuario inicia
-# sesión en el sistema. Se utiliza principalmente para configurar
-# variables de entorno y ejecutar comandos que deben realizarse
-# una sola vez al iniciar la sesión, como añadir directorios al
-# PATH.
+## This file loads only once, at the session start.
+# It is mainly used for configuring environment variables and
+# executing one-time commands, e.g: adding directories to PATH.
 
-### ~/.zshrc:
-## Este archivo se carga cada vez que se inicia una nueva
-# instancia de zsh en modo interactivo. Contiene
-# configuraciones específicas del usuario, como alias de comandos,
-# variables de entorno y configuraciones de shell. Se usa
-# comúnmente para personalizar el entorno de la línea de comandos
-# para un usuario específico.
-
-### Cargar .bashrc desde ~/.config
-# El comando chequea si existe allí un archivo y lo toma como configuración
-#[[ -f ~/.bashrc ]] && source ~/.bashrc
-
-# some variables
-RANGER_LOAD_DEFAULT_RC=false
-R_VERS=$(pacman -Q r | sed 's/r \(.\)\.\(.\).*/\1\.\2/')
+# Initial variables
+R_VERS=4.3
+#R_VERS="$(equery l dev-lang/R | sed 's/dev-lang\/R-\(.\..\).*/\1/')"
+#R_VERS=$(pacman -Q r | sed 's/r \(.\)\.\(.\).*/\1\.\2/')
+#RANGER_LOAD_DEFAULT_RC=false
 
 ### Default programs exports
-export EDITOR="nvim"
 export TERMINAL="st"
 export TERMINAL_PROG="st"
+export EDITOR="nvim"
 export BROWSER="firefox"
+export MOZ_ENABLE_WAYLAND=1
 export OPENER="rifle"
+
+export GTK_THEME=Adwaita:dark
+#export XDG_CURRENT_DESKTOP=sway
+export RTC_USE_PIPEWIRE=true
 
 ### Directory exports
 export XDG_CONFIG_HOME="$HOME/.config"
 export XDG_DATA_HOME="$HOME/.local/share"
 export XDG_CACHE_HOME="$HOME/.cache"
 export XDG_STATE_HOME="$HOME/.local/state"
-export PATH=$PATH:~/.local/bin
+export PATH=$PATH:~/.local/bin:/usr/local/texlive/2024/bin/x86_64-linux
+export MANPATH=/usr/local/texlive/2024/texmf-dist/doc/man:$MANPATH
+export INFOPATH=/usr/local/texlive/2024/texmf-dist/doc/info:$INFOPATH
 export XINITRC="$XDG_CONFIG_HOME/x11/xinitrc"
 export XAUTHORITY="$XDG_CONFIG_HOME/x11/Xauthority"
 
@@ -58,6 +50,9 @@ export TEXMFVAR=$XDG_CACHE_HOME/texlive/texmf-var
 
 #export GVIMINIT='let $MYGVIMRC="$XDG_CONFIG_HOME/vim/gvimrc" | source $MYGVIMRC'
 #export VIMINIT='let $MYVIMRC="$XDG_CONFIG_HOME/vim/vimrc" | source $MYVIMRC'
+
+export WGETRC="$XDG_CONFIG_HOME/wgetrc"
+alias wget=wget --hsts-file="$XDG_CACHE_HOME/wget-hsts"
 
 export WORKON_HOME="$XDG_DATA_HOME/virtualenvs"
 export W3M_DIR="$XDG_STATE_HOME/w3m"

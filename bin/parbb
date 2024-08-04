@@ -1,0 +1,83 @@
+#!/bin/sh
+## Dependencias
+# simple-mtpfs (TODO: a sustituir por android-tools)
+# pdfcpu-bin
+
+set -e # para salir en caso de errores
+
+### Variables
+WPPDOCS="~/misc/hola/Internal\ shared\ storage/Android/media/com.whatsapp/WhatsApp/Media/WhatsApp\ Documents"
+
+### Definición de funciones
+
+## eliminarRecetas:
+# La función necesita como argumento al menos un "."
+# El mismo no va entre paréntesis. De esa manera se logra identificar al
+# directorio como tal.
+eliminarRecetas() {
+	local folder=$1
+	printf "¿Querés eliminar las recetas en este directorio? (y/n)\n"
+	read quest
+	case $quest in
+		y ) 
+			rm "$folder"/receta_* && echo "Eliminadas" || exit 1
+			;;
+		n )	
+			printf "Las recetas en este directorio no se eliminaron. ¿Salir? (y/n)" ; read salir
+			[ ${salir} = y ] && exit 1 || :
+			;;
+		[!yn])
+			printf "Error de tipeo. Reintentá"
+			eliminarRecetas "$folder"
+			;;
+	esac
+## Este if-else statement fue reemplazado por un case
+#	if [ "$quest" = "y" ]; then
+#		rm "$folder"/receta_* && echo "Eliminadas" || exit 1
+#	elif [ "$quest" = "n" ]; then
+#		echo -e "Las recetas en este directorio no se eliminaron. ¿Salir? (y/n)"
+#		read salir
+#		if [ "$salir" = y ]; then
+#		    exit 1
+#		else
+#		    :
+#		fi
+#	else
+#		echo -e "Error de tipeo. Reintentá"
+#		eliminarRecetas "$folder"
+#	fi
+}
+
+### MAIN ---
+
+## Saludo de bienvenida
+printf "PARBB (Bash Script Version)\nProcesador Automático de Recetas 'Basta Basta'\n"
+
+## Montar el dispositivo (TODO: Actualizarlo a android-tools)
+simple-mtfs --device 1 ~/misc/hola || (echo "Error de montaje" && exit 1)
+
+## Voy a wpp docs
+cd ${WPPDOCS} || (echo "No se encontró la carpeta 'WhatsApp Documents'" && exit 1)
+
+## -z para chequear si el directorio esta vacio. 
+# -n para chequear si el directorio no está vacío
+echo "Chequeo de directorio /misc/tio"
+[ -n "$(ls ~/misc/tio)" ] && eliminarRecetas ~/misc/tio || echo "Directorio vacío. Procedo."
+
+## copio todo a ~/misc/tio
+cp receta_* ~/misc/tio || (echo "No se pudo copiar" && exit 1)
+
+## Antes de cambiar el wd, pregunto si no quiero eliminar las recetas del celular
+echo "Existen recetas en:" ; pwd ; eliminarRecetas .
+
+## unifico las recetas en un pdf
+cd ~/misc/tio ; pdfcpu merge out.pdf receta_*
+
+## Tomo las recetas unificadas y las pongo en un grid.
+# Este es el resultado final, y se guarda en ~/
+pdfcpu grid -- ~/recetas_procesadas.pdf 1 4 out.pdf && echo "Recetas procesadas exitosamente."
+rm out.pdf
+
+echo "Todavía quedan guardadas en este directorio las recetas ya procesadas" ; pwd
+eliminarRecetas . && echo "Ejecución exitosa"
+exit 0

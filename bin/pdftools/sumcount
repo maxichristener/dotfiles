@@ -1,0 +1,2 @@
+#!/bin/sh
+for i in *.pdf; do pdfinfo "$i" | grep ^Pages:; done | awk '{s+=$2} END {print s}'

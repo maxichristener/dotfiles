@@ -1,0 +1,2 @@
+#!/bin/sh
+for i in *.pdf; do echo $i && pdfinfo "$i" | grep ^Pages:; done

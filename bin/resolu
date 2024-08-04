@@ -1,0 +1,17 @@
+#!/bin/sh
+
+main(){
+xrandr
+echo "Please, set your desired output"
+read OTP
+xrandr --output $OTP --scale-from 1920x1080 --panning 1920x1080
+}
+
+quest() {
+echo 'Would you like to set another screen? (y/n)'
+read a 
+}
+
+main ; quest
+[ "$a" = "y" ] && main || ( [ "$a" = "n" ] && : || ( echo 'Please, retry' ; quest ) ) 
+exit 0

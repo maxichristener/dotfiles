@@ -1,5 +1,7 @@
-### maxi's .zshrc
-##
+### maxi's ~/.zshrc
+## This file loads on every new terminal session.
+## It contains specific configurations, 
+## like aliases and zsh configs.
 #
 HISTFILE=~/.local/share/histfile
 HISTSIZE=1000
@@ -20,9 +22,9 @@ zstyle ':completion:*' menu select cache-path "$XDG_CACHE_HOME"/zsh/zcompcache c
 zmodload zsh/complist
 compinit -d "$XDG_CACHE_HOME"/zsh/zcompdump-$ZSH_VERSION
 _comp_options+=(globdots)		# for completion in hidden files.
-promptinit
+promptinit ; prompt gentoo
 
-autoload -U colors && colors	# Load colors
+autoload -U colors && colors	# Loads colors
 PS1='%F{green}%B%n@%m%b%f:%F{blue}%B%~%b%f$ '
 
 
@@ -35,21 +37,22 @@ export GPG_TTY=$(tty)
 export GCC_COLORS='error=01;31:warning=01;35:note=01;36:caret=01;32:locus=01:quote=01'
 
 ### ALIAS
+#alias lf="lfub"
 alias ff="fastfetch"
+alias sw="dbus-launch --exit-with-session sway"
+alias sx="startx"
 alias vim="nvim"
-alias lf="lfub"
-alias tem="emacsclient -nw"
-alias em="emacsclient -nc"
+alias rm="rm -i"
 alias ls="ls --color -X"
-alias lsd="lsd -X"
-alias tre="lsd --tree"
 alias vdir="vdir -h --color=auto"
 alias grep="grep --color=auto"
+alias lsd="lsd -X"
+alias tre="lsd --tree"
 alias clip="xclip -selection clipboard"
-alias u="cd /run/media/maxi/"
-alias ra="ranger"
-alias ri="rifle"
-alias jl="julia"
+#alias ra="ranger"
+#alias ri="rifle"
+#alias jl="julia"
+alias R="R --quiet --no-restore-data --no-save"
 alias gpglist="gpg --list-keys --keyid-format=long"
 
 ## THIS SHOULD GO AT EOF: fish-like syntax highlight. You need the arch package to be installed.
