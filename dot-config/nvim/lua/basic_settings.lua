@@ -12,14 +12,13 @@ vim.opt.incsearch = true   --- increase searching
 vim.opt.inccommand = 'split'
 vim.opt.hlsearch = true --- highlight search
 vim.opt.spelllang = 'es'
-vim.opt.updatetime = 250
-
+----vim.opt.updatetime = 250
+--
 vim.opt.list = true ---nvim special character showing
 vim.opt.listchars = { tab = '» ', trail = '·', nbsp = '␣' }
-
+--
 vim.opt.laststatus = 0 -- status bar
-vim.opt.title = true
-
+--
 vim.opt.splitright = true
 vim.opt.splitbelow = true
-
+--
