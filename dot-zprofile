@@ -1,0 +1,79 @@
+# maxi's dot-zprofile
+## This file loads only once, when the session start.
+# It is mainly used for configuring environment variables and
+# executing one-time commands, e.g: adding directories to PATH.
+
+export PATH=$PATH:~/.local/bin
+#export PATH=$PATH:~/.local/bin:/usr/local/texlive/2024/bin/x86_64-linux:$XDG_CONFIG_HOME/emacs/bin/
+#export MANPATH=/usr/local/texlive/2024/texmf-dist/doc/man:$MANPATH
+#export INFOPATH=/usr/local/texlive/2024/texmf-dist/doc/info:$INFOPATH
+
+### General ----
+#export XDG_CURRENT_DESKTOP="sway"
+export XDG_CONFIG_HOME="$HOME/.config"
+export XDG_DATA_HOME="$HOME/.local/share"
+export XDG_CACHE_HOME="$HOME/.cache"
+export XDG_STATE_HOME="$HOME/.local/state"
+
+export EDITOR="nvim"
+export BROWSER="firefox"
+export MOZ_ENABLE_WAYLAND=1
+
+export RTC_USE_PIPEWIRE=true
+export WLR_XWAYLAND=false
+export XCURSOR_THEME="Adwaita"
+export GTK_THEME=Adwaita:dark
+export QT_QPA_PLATFORM="wayland"          # wayland
+export QT_QPA_PLATFORMTHEME="gtk2"        # have QT use gtk2 theme.
+#export XINITRC="$XDG_CONFIG_HOME/x11/xinitrc"
+#export XAUTHORITY="$XDG_CONFIG_HOME/x11/Xauthority"
+
+### Langs ----
+# py
+export PYTHON_HISTORY="$XDG_STATE_HOME/python/history"
+export PYTHONPYCACHEPREFIX="$XDG_CACHE_HOME/python"
+export PYTHONUSERBASE="$XDG_DATA_HOME/python"
+
+# r
+# R_VERS="$(equery l dev-lang/R | sed 's/dev-lang\/R-\(.\..\).*/\1/')"
+# R_VERS=$(pacman -Q r | sed 's/r \(.\)\.\(.\).*/\1\.\2/')
+export R_VERS=4.5
+export R_HOME_USER="$HOME/.config/R"
+export R_PROFILE_USER="$HOME/.config/R/profile"
+export R_HISTFILE="$HOME/.config/R/history"
+export R_LIBS_USER="$HOME/.config/R/x86_64-pc-linux-gnu-library/$R_VERS"
+
+# tex
+export TEXMFCONFIG=$XDG_CONFIG_HOME/texlive/texmf-config
+export TEXMFHOME=$XDG_DATA_HOME/texmf
+export TEXMFVAR=$XDG_CACHE_HOME/texlive/texmf-var
+
+# jupyter
+export JUPYTERLAB_DIR=$HOME/.local/share/jupyter/lab
+export CRYPTOGRAPHY_OPENSSL_NO_LEGACY='1'
+
+# golang
+export GOPATH="$XDG_DATA_HOME"/go
+export GOMODCACHE="$XDG_CACHE_HOME"/go/mod
+
+
+### Misc ----
+export GNUPGHOME="$XDG_DATA_HOME"/gnupg
+export WINEPREFIX="$XDG_DATA_HOME"/wineprefixes/default # mkdir -p "$XDG_DATA_HOME"/wineprefixes
+export GTK2_RC_FILES="$XDG_CONFIG_HOME/gtk-2.0/gtkrc-2.0"
+
+export WGETRC="$XDG_CONFIG_HOME/wgetrc"
+alias wget=wget --hsts-file="$XDG_CACHE_HOME/wget-hsts"
+
+export NPM_CONFIG_USERCONFIG=$XDG_CONFIG_HOME/npm/npmrc
+
+export WORKON_HOME="$XDG_DATA_HOME/virtualenvs"
+
+export W3M_DIR="$XDG_STATE_HOME/w3m"
+export PASSWORD_STORE_DIR="$XDG_DATA_HOME"/pass
+
+export PARALLEL_HOME="$XDG_CONFIG_HOME"/parallel
+
+#
+export MAKEFLAGS="-j4"
+
