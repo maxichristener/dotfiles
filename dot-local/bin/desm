@@ -1,0 +1,11 @@
+#!/bin/sh
+# TODO: Ampliar la posibilidad a otros pendrives
+set -e
+
+pend='pend'
+pendnumber=1
+
+umount /dev/mapper/${pend} && sudo cryptsetup close /dev/mapper/${pend} || exit 1
+echo "Desmontado exitosamente"
+exit 0
+

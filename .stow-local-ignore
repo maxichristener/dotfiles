@@ -1,0 +1,13 @@
+### Stow local ignore ###
+
+Makefile
+
+# Git
+\.git
+\.gitignore
+\.gitmodules
+
+# Documentation
+^/README.*
+^/LICENSE.*
+^/COPYING

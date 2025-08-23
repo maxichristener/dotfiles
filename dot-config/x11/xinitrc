@@ -1,0 +1,4 @@
+#test -f ~/.config/x11/Xkeymap && xkbcomp ~/.config/x11/Xkeymap $DISPLAY &
+#xrdb -load ~/.config/x11/Xresources & 
+#feh --no-fehbg --bg-scale /usr/share/backgrounds/archlinux/geolanes.png &
+setxkbmap latam & goblocks & gentoo-pipewire-launcher & exec dbus-launch --exit-with-session dwm

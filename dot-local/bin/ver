@@ -1,0 +1,24 @@
+#!/bin/sh
+
+filename="$1"
+extension=${filename##*.} # from beggining to ...
+
+case ${extension} in
+	"doc")
+		catdoc "$filename"
+		;;
+	"docx")
+		( unzip -p "$filename" | grep --text '<w:r' | sed -e 's/<w:p[^<\/]*>/ \n/g' -e 's/<[^<]*>//g' | grep -v '^[[:space:]]*$' | sed G | bat --file-name="$filename" )
+		;;
+	"pdf")
+		pdftotext "$filename" - | bat --file-name="$filename"
+		;;
+	* )
+		bat "$filename"
+		;;
+esac
+
+# ( unzip -p "$filename" | grep --text '<w:r' | sed 's/<w:p[^<\/]*>/ \n/g' | sed 's/<[^<]*>//g' | grep -v '^[[:space:]]*$' | sed G | less ) 
+# - Unzips the docx file, and grabs just the text with sed.
+#   Also replaces opening <w:r> tags with newlines.
+#   The final `sed G` double spaces the output
