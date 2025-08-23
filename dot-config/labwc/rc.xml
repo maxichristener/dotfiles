@@ -1,0 +1,82 @@
+<?xml version="1.0"?>
+
+<!--
+  This is a very simple config file with many options missing. For a complete
+  set of options with comments, see docs/rc.xml.all
+-->
+
+<labwc_config>
+
+  <theme>
+    <name></name>
+    <cornerRadius>8</cornerRadius>
+    <font name="sans" size="10" />
+  </theme>
+
+    <desktops>
+      <popupTime>1000</popupTime>
+      <names>
+        <name>1</name>
+        <name>2</name>
+        <name>3</name>
+      </names>
+    </desktops>
+
+  <keyboard>
+    <default />
+    <!-- Use a different terminal emulator -->
+    <keybind key="W-Return">
+      <action name="Execute" command="foot" />
+    </keybind>
+    <keybind key="W-p">
+      <action name="Execute" command="bemenu-run -b" />
+    </keybind>
+    <keybind key="W-w">
+      <action name="Close" />
+    </keybind>
+    <keybind key="W-1">
+	<action name="GoToDesktop" to="left" wrap="yes" />
+    </keybind>
+    <keybind key="W-2">
+	<action name="GoToDesktop" to="right" wrap="yes" />
+    </keybind>
+    <keybind key="W-S-1">
+	<action name="SendToDesktop" to="left" wrap="yes" />
+    </keybind>
+    <keybind key="W-S-2">
+	<action name="SendToDesktop" to="right" wrap="yes" />
+    </keybind>
+    <!--
+      Remove a previously defined keybind
+      A shorter alternative is <keybind key="W-F4" />
+    <keybind key="W-F4">
+      <action name="None" />
+    </keybind>
+    -->
+    <!-- Volume -->
+    <keybind key="XF86AudioRaiseVolume">
+    <action name="Execute" command="wpctl set-volume -l 1.5 @DEFAULT_AUDIO_SINK@ 5%+" />
+    </keybind>
+    <keybind key="XF86AudioLowerVolume">
+    <action name="Execute" command="wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%-" />
+    </keybind>
+    <keybind key="XF86AudioMute">
+    <action name="Execute" command="wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle" />
+    <!-- -->
+    </keybind>
+    <keybind key="XF86HomePage">
+    <action name="Execute" command="firefox" />
+    </keybind>
+  </keyboard>
+
+  <mouse>
+    <default />
+    <!-- Show a custom menu on desktop right click -->
+    <context name="Root">
+      <mousebind button="Right" action="Press">
+        <action name="ShowMenu" menu="some-custom-menu" />
+      </mousebind>
+    </context>
+  </mouse>
+
+</labwc_config>
