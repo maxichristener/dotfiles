@@ -25,6 +25,9 @@
   <keyboard>
     <default />
     <!-- Use a different terminal emulator -->
+    <keybind key="W-f">
+      <action name="Execute" command="pcmanfm" />
+    </keybind>
     <keybind key="W-Return">
       <action name="Execute" command="foot" />
     </keybind>
