@@ -7,7 +7,7 @@ require("mason").setup({
 			package_pending = "➜",
 			package_uninstalled = "✗",
 		},
-	},
+	}
 })
 
 require("mason-lspconfig").setup({

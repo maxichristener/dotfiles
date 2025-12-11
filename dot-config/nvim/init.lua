@@ -4,8 +4,8 @@
 
 require('basic_settings')
 require('keymaps')
-require('customs/html')
---require('plugins/lazy')
---require('plugins/lsp')
---require('plugins/python')
-
+-- require('customs/html')
+-- require('plugins/lazy')
+-- require('plugins/lsp')
+-- require('plugins/python')
+-- 

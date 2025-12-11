@@ -28,6 +28,9 @@
     <keybind key="W-f">
       <action name="Execute" command="pcmanfm" />
     </keybind>
+    <keybind key="W-e">
+      <action name="Execute" command="emacsclient --create-frame" />
+    </keybind>
     <keybind key="W-Return">
       <action name="Execute" command="foot" />
     </keybind>
