@@ -1,4 +1,4 @@
-# maxi's dot-zprofile
+# maxi's dot-zprofile  -*- mode: sh; -*-
 ## This file loads only once, when the session start.
 # It is mainly used for configuring environment variables and
 # executing one-time commands, e.g: adding directories to PATH.

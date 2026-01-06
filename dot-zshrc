@@ -1,12 +1,15 @@
-#!/bin/zsh
-### maxi's dot-zshrc
+### maxi's dot-zshrc  -*- mode: sh; -*-
 ## This file loads on every new terminal session.
 ## It contains specific configurations,
 ## like aliases and zsh configs.
 
+# hist
 HISTFILE=~/.local/share/histfile
 HISTSIZE=1000
 SAVEHIST=1000
+
+# eat integration (zsh)
+[ -n "$EAT_SHELL_INTEGRATION_DIR" ] && source "$EAT_SHELL_INTEGRATION_DIR/zsh"
 
 ### ZSH PARTICULAR CONFS ---
 # emacs mode
