@@ -1,46 +1,50 @@
 {
-"layer": "top",	
-"position": "top",
-"height": 26,
+    "layer": "top",
+    "position": "top",
+    "height": 30,
+    "bar_id": "bar-0",
+    
+    "modules-left": [
+        "wlr/taskbar"
+    ],
+    "modules-center": [],
+    "modules-right": [
+        "wireplumber",
+        "battery",
+        "clock"
+    ],
 
-"bar_id": "bar-0",
-"ipc": true,
+    "wlr/taskbar": {
+        "format": "{icon} {title:.30}",
+        "icon-size": 16,
+        "tooltip-format": "{title}",
+        "on-click": "activate",
+        "on-click-middle": "close"
+    },
 
-"modules-left": ["sway/workspaces","sway/mode"],
-"modules-center": ["sway/window"],
-"modules-right": ["wireplumber","clock"],
+    "wireplumber": {
+        "format": "{volume}% {icon}",
+        "format-muted": "Silenciado ",
+        "on-click": "pavucontrol",
+        "on-click-right": "wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle",
+        "format-icons": ["", "", ""]
+    },
 
-"sway/workspaces": {
-		"disable-scroll": false,
-		"disable-markup": true,
-		"format": "{index}" 
-},
+    "battery": {
+        "states": {
+            "warning": 30,
+            "critical": 15
+        },
+        "format": "{capacity}% {icon}",
+        "format-charging": "{capacity}% ",
+        "format-plugged": "{capacity}% ",
+        "format-icons": ["", "", "", "", ""]
+    },
 
-"sway/mode": { 
-  "format": "{}"
-},
-
-"sway/window": {
-	"format": "{}",
-	"max-length": 150
-},
-
-"wireplumber": {
-    "format": "{volume}% {icon}",
-    "format-muted": "",
-    "on-click": "helvum",
-    "format-icons": ["", "", ""]
-},
-
-"clock": {
+    "clock": {
         "timezone": "America/Argentina/Tucuman",
+        "format": "{:%H:%M} ",
         "tooltip-format": "<big>{:%Y %B}</big>\n<tt><small>{calendar}</small></tt>",
-        "format-alt": "{:%a %b %d %Y %H:%M}"
-},
-
-            
-"on-click": "blueman-manager"    
-
-}
-
+        "format-alt": "{:%a %d %b %Y} "
+    }
 }
